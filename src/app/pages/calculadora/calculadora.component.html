@@ -1,0 +1,37 @@
+<mat-card class="top-card">
+    <div class="input-container">
+        <mat-form-field>
+            <input type="text" placeholder="DDD de Origem" aria-label="Number" matInput [formControl]="origemControl"
+                (ngModelChange)="origemChange($event)" [matAutocomplete]="auto1" maxlength="3"
+                [(ngModel)]="model.origemValue">
+            <mat-autocomplete #auto1="matAutocomplete">
+                <mat-option *ngFor="let obj of filteredOrigem | async" [value]="obj">
+                    {{obj | lpad: 3: '0'}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+            <input type="text" placeholder="DDD de Destino" aria-label="Number" matInput [formControl]="destinoControl"
+                [matAutocomplete]="auto2" [(ngModel)]="model.destinoValue">
+            <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let obj of filteredDestino | async" [value]="obj">
+                    {{obj | lpad: 3: '0'}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" placeholder="Tempo de Ligação" [(ngModel)]="model.totalMinuto">
+        </mat-form-field>
+        <button mat-button mat-raised-button (click)="calcularValores()" color="primary">Simule o seu Plano</button>
+    </div>
+    <div class="output-container" *ngIf="executadaConsulta">
+        <div class="plano-card">
+            <h1>{{semPlano.nome}}</h1>
+            <h2>${{semPlano.valor ? semPlano.valor : '00.00'}}</h2>
+        </div>
+        <div class="plano-card" *ngFor="let plano of planoList">
+            <h1>{{plano.nome}}</h1>
+            <h2>${{plano.resultado ? plano.resultado : '00.00'}}</h2>
+        </div>
+    </div>
+</mat-card>
